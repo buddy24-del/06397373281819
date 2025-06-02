@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Anoniw</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background-color: #fff;
+      color: #4b0082; /* deep purple text */
+    }
+    header {
+      padding: 20px;
+      text-align: center;
+      background: #f4e5ff; /* light purple */
+      box-shadow: 0 2px 5px rgba(75,0,130,0.2);
+      position: relative;
+      overflow: visible;
+    }
+    header h1 {
+      margin: 0;
+      font-size: 36px;
+      font-weight: bold;
+      color: #6a0dad; /* bright purple */
+      position: relative;
+      z-index: 2;
+    }
+    header div {
+      font-size: 14px;
+      color: #7d5ba6; /* muted purple */
+      margin-bottom: 5px;
+      position: relative;
+      z-index: 2;
+    }
+    nav {
+      text-align: center;
+      margin-top: 10px;
+      position: relative;
+      z-index: 2;
+    }
+    nav a {
+      margin: 0 15px;
+      text-decoration: none;
+      color: #6a0dad;
+      font-weight: 600;
+      transition: color 0.3s ease;
+    }
+    nav a:hover {
+      color: #9b59b6;
+    }
+    .section {
+      padding: 40px 20px;
+      text-align: center;
+    }
+    .slider {
+      width: 300px;
+      height: 200px;
+      overflow: hidden;
+      margin: 20px auto 0;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(75,0,130,0.15);
+      position: relative;
+    }
+    .slides {
+      display: flex;
+      width: calc(300px * 5);
+      transition: transform 0.5s ease-in-out;
+    }
+    .slides img {
+      width: 300px;
+      height: 200px;
+      object-fit: cover;
+      user-select: none;
+      border-radius: 8px;
+    }
+    iframe {
+      margin-top: 30px;
+      width: 100%;
+      max-width: 400px;
+      height: 480px;
+      border: none;
+      border-radius: 12px;
+      box-shadow: 0 0 20px #9b59b6aa;
+    }
+
+    /* Sticker common styles */
+    .sticker {
+      position: absolute;
+      width: 48px;
+      height: 48px;
+      object-fit: contain;
+      pointer-events: none;
+      user-select: none;
+      filter: drop-shadow(0 0 3px #6a0dad);
+      animation: float 4s ease-in-out infinite alternate;
+      opacity: 0.9;
+      z-index: 10;
+    }
+    @keyframes float {
+      0% { transform: translateY(0); }
+      100% { transform: translateY(-12px); }
+    }
+
+    /* Individual sticker positions and animation delays */
+    /* Kageyama stickers */
+    .kageyama1 { top: 10px; left: 15px; animation-delay: 0s; }
+    .kageyama2 { top: 200px; right: 10%; animation-delay: 1.2s; }
+    .kageyama3 { top: 450px; left: 5%; animation-delay: 2.5s; }
+
+    /* Tulip stickers */
+    .tulip1 { top: 100px; left: 40%; animation-delay: 0.7s; }
+    .tulip2 { top: 300px; right: 40%; animation-delay: 1.1s; }
+    .tulip3 { top: 600px; right: 15%; animation-delay: 0.4s; }
+    .tulip4 { top: 500px; left: 50%; animation-delay: 0.9s; }
+
+    /* Buldak stickers */
+    .buldak1 { top: 50px; right: 20px; animation-delay: 1.3s; }
+    .buldak2 { top: 350px; right: 25%; animation-delay: 1.7s; }
+    .buldak3 { top: 550px; left: 20%; animation-delay: 2.2s; }
+
+    /* Blooming Tulip Container */
+    .blooming-tulip-container {
+      position: relative;
+      width: 280px;
+      height: 280px;
+      margin: 30px auto 50px auto;
+      filter: drop-shadow(0 0 10px #9b59b6cc);
+      animation: growTulip 3s ease forwards;
+    }
+    @keyframes growTulip {
+      0% {
+        opacity: 0;
+        transform: scale(0.3);
+      }
+      100% {
+        opacity: 1;
+        transform: scale(1);
+      }
+    }
+
+    /* Stem */
+    .stem {
+      position: absolute;
+      bottom: 20px;
+      left: 50%;
+      width: 6px;
+      height: 120px;
+      background: linear-gradient(180deg, #7a44cc, #4b0082);
+      border-radius: 4px;
+      transform: translateX(-50%);
+      box-shadow: 0 0 8px #9b59b6;
+      animation: stemGrow 3s ease forwards;
+    }
+    @keyframes stemGrow {
+      0% { height: 0; opacity: 0; }
+      100% { height: 120px; opacity: 1; }
+    }
+
+    /* Tulip petals */
+    .tulip {
+      position: absolute;
+      bottom: 140px;
+      left: 50%;
+      width: 140px;
+      height: 140px;
+      transform: translateX(-50%);
+      filter: drop-shadow(0 0 12px #9b59b6);
+      animation: tulipBloom 3s ease forwards;
+      opacity: 0;
+    }
+    @keyframes tulipBloom {
+      0% { opacity: 0; transform: translateX(-50%) scale(0.4) translateY(40px); }
+      100% { opacity: 1; transform: translateX(-50%) scale(1) translateY(0); }
+    }
+
+    .petal {
+      position: absolute;
+      background: radial-gradient(circle at center, #b19cd9 40%, #6a0dad 90%);
+      border-radius: 60% 60% 70% 70% / 100% 100% 80% 80%;
+      box-shadow: 0 0 15px #9b59b6;
+      filter: drop-shadow(0 0 8px #a27de1);
+      opacity: 0.95;
+      animation: petalGlow 3s ease infinite alternate;
+    }
+    .petal.left {
+      width: 70px;
+      height: 100px;
+      left: 10px;
+      top: 20px;
+      transform-origin: top right;
+      animation-delay: 0.2s;
+      animation-name: petalSwayLeft;
+    }
+    .petal.center {
+      width: 80px;
+      height: 110px;
+      left: 40px;
+      top: 0;
+      border-radius: 50% 50% 60% 60% / 100% 100% 90% 90%;
+      animation-delay: 0s;
+      animation-name: petalGlow;
+    }
+    .petal.right {
+      width: 70px;
+      height: 100px;
+      right: 10px;
+      top: 20px;
+      transform-origin: top left;
+      animation-delay: 0.4s;
+      animation-name: petalSwayRight;
+    }
+
+    @keyframes petalGlow {
+      0% { box-shadow: 0 0 10px #9b59b6; }
+      100% { box-shadow: 0 0 25px #d6a8ff; }
+    }
+    @keyframes petalSwayLeft {
+      0%, 100% { transform: rotate(-7deg); }
+      50% { transform: rotate(-15deg); }
+    }
+    @keyframes petalSwayRight {
+      0%, 100% { transform: rotate(7deg); }
+      50% { transform: rotate(15deg); }
+    }
+
+    /* Leaves */
+    .leaf {
+      position: absolute;
+      width: 80px;
+      height: 50px;
+      background: linear-gradient(135deg, #7a44cc, #4b0082);
+      border-radius: 50% 50% 60% 60% / 100% 100% 90% 90%;
+      box-shadow: 0 0 10px #9b59b6;
+      filter: drop-shadow(0 0 5px #7a44cc);
+      opacity: 0.85;
+      animation: leafGlow 3s ease infinite alternate;
+    }
+    .leaf1 {
+      bottom: 80px;
+      left: 20%;
+      transform: rotate(-25deg);
+      animation-delay: 0.1s;
+    }
+    .leaf2 {
+      bottom: 70px;
+      right: 25%;
+      transform: rotate(20deg);
+      animation-delay: 0.3s;
+    }
+    @keyframes leafGlow {
+      0% { box-shadow: 0 0 7px #9b59b6; opacity: 0.7; }
+      100% { box-shadow: 0 0 18px #cfa2ff; opacity: 0.95; }
+    }
+
+    /* Fallen petals */
+    .fallen-petal {
+      position: absolute;
+      width: 30px;
+      height: 40px;
+      background: radial-gradient(circle at center, #b19cd9 40%, #6a0dad 90%);
+      border-radius: 60% 60% 70% 70% / 100% 100% 80% 80%;
+      box-shadow: 0 0 12px #9b59b6;
+      filter: drop-shadow(0 0 5px #a27de1);
+      opacity: 0.8;
+      animation: petalFall 4s ease-in-out infinite alternate;
+    }
+    .petal1 {
+      bottom: 10px;
+      left: 20%;
+      animation-delay: 0s;
+    }
+    .petal2 {
+      bottom: 5px;
+      left: 45%;
+      width: 25px;
+      height: 35px;
+      animation-delay: 1.5s;
+    }
+    .petal3 {
+      bottom: 15px;
+      right: 25%;
+      animation-delay: 3s;
+    }
+    @keyframes petalFall {
+      0% { transform: translateY(0) rotate(0deg); opacity: 0.8; }
+      50% { transform: translateY(10px) rotate(10deg); opacity: 0.6; }
+      100% { transform: translateY(0) rotate(0deg); opacity: 0.8; }
+    }
+
+    /* Butterflies */
+    .butterfly {
+      position: absolute;
+      width: 40px;
+      height: 40px;
+      background-image: url('https://i.postimg.cc/YSzfqTt2/IMG-8315.jpg'); /* You can replace with a transparent butterfly image */
+      background-size: contain;
+      background-repeat: no-repeat;
+      filter: drop-shadow(0 0 5px #d7b6ff);
+      animation-timing-function: ease-in-out;
+    }
+    .butterfly1 {
+      bottom: 180px;
+      left: 60%;
+      animation: flutter1 4s infinite;
+      animation-delay: 0s;
+    }
+    .butterfly2 {
+      bottom: 140px;
+      left: 75%;
+      animation: flutter2 3.7s infinite;
+      animation-delay: 1.3s;
+    }
+    .butterfly3 {
+      bottom: 160px;
+      left: 50%;
+      animation: flutter3 4.5s infinite;
+      animation-delay: 0.7s;
+    }
+
+@keyframes flutter1 {
+  0% { transform: translate(0, 0) rotate(0deg) scale(1); opacity: 1; }
+  50% { transform: translate(40px, -30px) rotate(20deg) scale(1.1); opacity: 0.8; }
+  100% { transform: translate(0, 0) rotate(0deg) scale(1); opacity: 1; }
+}
+
+@keyframes flutter2 {
+  0% { transform: translate(0, 0) rotate(0deg) scale(1); opacity: 1; }
+  50% { transform: translate(-30px, -40px) rotate(-15deg) scale(1.05); opacity: 0.7; }
+  100% { transform: translate(0, 0) rotate(0deg) scale(1); opacity: 1; }
+}
+
+@keyframes flutter3 {
+  0% { transform: translate(0, 0) rotate(0deg) scale(1); opacity: 1; }
+  50% { transform: translate(35px, -25px) rotate(10deg) scale(1.08); opacity: 0.9; }
+  100% { transform: translate(0, 0) rotate(0deg) scale(1); opacity: 1; }
+}
+
+  </style>
+</head>
+<body>
+
+  <header>
+    <div>Made for you</div>
+    <h1>Anoniw</h1>
+    <nav>
+      <a href="#home">Home</a>
+      <a href="#justbecause">Just Because</a>
+      <a href="#music">Music</a>
+    </nav>
+
+    <!-- Stickers at header -->
+    <img class="sticker kageyama1" src="https://i.postimg.cc/Y92N48S6/IMG-8314.jpg" alt="Kageyama sticker 1" />
+    <img class="sticker buldak1" src="https://i.postimg.cc/g2RH1n5Z/IMG-8316.jpg" alt="Buldak sticker 1" />
+    <img class="sticker tulip1" src="https://i.postimg.cc/h4ysmFTf/IMG-8317.jpg" alt="Tulip sticker 1" />
+  </header>
+
+  <!-- Stickers scattered around the page -->
+  <img class="sticker kageyama2" src="https://i.postimg.cc/YSzfqTt2/IMG-8315.jpg" alt="Kageyama sticker 2" />
+  <img class="sticker kageyama3" src="https://i.postimg.cc/Y92N48S6/IMG-8314.jpg" alt="Kageyama sticker 3" />
+
+  <img class="sticker tulip2" src="https://i.postimg.cc/h4ysmFTf/IMG-8317.jpg" alt="Tulip sticker 2" />
+  <img class="sticker tulip3" src="https://i.postimg.cc/h4ysmFTf/IMG-8317.jpg" alt="Tulip sticker 3" />
+  <img class="sticker tulip4" src="https://i.postimg.cc/tRfj54x6/IMG-8320.jpg" alt="Tulip sticker 4" />
+
+  <img class="sticker buldak2" src="https://i.postimg.cc/g2RH1n5Z/IMG-8316.jpg" alt="Buldak sticker 2" />
+  <img class="sticker buldak3" src="https://i.postimg.cc/g2RH1n5Z/IMG-8316.jpg" alt="Buldak sticker 3" />
+
+  <!-- Home Section -->
+  <section class="section" id="home">
+    <h2>Hello :’))</h2>
+    <p>I love you, passionately</p>
+
+    <div class="slider">
+      <div class="slides">
+        <img src="https://i.postimg.cc/9QPHCPNP/IMG-8312.jpg" alt="Image 1" />
+        <img src="https://i.postimg.cc/NMzWpd5t/IMG-8313.jpg" alt="Image 2" />
+        <img src="https://i.postimg.cc/d04MTsFL/IMG-8318.jpg" alt="Image 3" />
+        <img src="https://i.postimg.cc/tTTK3KRD/IMG-8319.jpg" alt="Image 4" />
+        <img src="https://i.postimg.cc/tRfj54x6/IMG-8320.jpg" alt="Image 5" />
+      </div>
+    </div>
+  </section>
+
+  <!-- Just Because Section -->
+  <section class="section" id="justbecause">
+    <h2>Just Because</h2>
+    <p>I love you to the moon and back.</p>
+
+    <div style="display: flex; flex-direction: column; align-items: center; gap: 20px; margin-top: 30px;">
+      
+      <!-- Letter 1 -->
+      <div style="max-width: 320px; padding: 20px; background: #f7f2fc; border-radius: 12px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); text-align: left;">
+        <p style="margin: 0; font-size: 15px;"><strong>Your constant 11:11 I love yous.</strong><br><br>Small things mattered I say. That’s why my 11:11 felt much better, became the most awaited time of my day. It’s not just the time itself, it’s your consistent word that brought me to life.</p>
+      </div>
+
+      <!-- Letter 2 -->
+      <div style="max-width: 320px; padding: 20px; background: #fef1f8; border-radius: 12px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); text-align: left;">
+        <p style="margin: 0; font-size: 15px;"><strong>:'))</strong><br><br>Whether it be crowded or standing alone, your smile was the warmth that brought me home.</p>
+      </div>
+			
+ <!-- Letter 3 -->
+      <div style="max-width: 320px; padding: 20px; background: #fef1f8; border-radius: 12px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); text-align: left;">
+        <p style="margin: 0; font-size: 15px;"><strong>By your side I feel at ease, complete. </strong><br><br> With you, I did things I thought I would no longer do. With you, I do things naturally. Without trying, without thinking. Plz let me take care of u 4ever. 😢</p>
+      </div>
+
+			 <!-- Letter 4 -->
+      <div style="max-width: 320px; padding: 20px; background: #fef1f8; border-radius: 12px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); text-align: left;">
+        <p style="margin: 0; font-size: 15px;"><strong> I love your flaws.</strong><br><br> I hope u come to realize that you've always been deserving and worthy of good things. No matter your past or what may come--I'll love you either way. You never asked for much and you are never too much. </p>
+      </div>
+			
+			<!-- Letter 5 -->
+      <div style="max-width: 320px; padding: 20px; background: #fef1f8; border-radius: 12px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); text-align: left;">
+        <p style="margin: 0; font-size: 15px;"><strong> Soft spot </strong><br><br> I love you without any regrets, doubts, or out of curiosity. </p>
+      </div>
+			
+    </div>
+  </section>
+
+  <!-- Music Section -->
+  <section class="section" id="music">
+    <h2>Music</h2>
+    <p>Pakagat rawr 🦖</p>
+    <iframe 
+      src="https://open.spotify.com/embed/playlist/6ev7mJIJOztZJnQEdIb7O3" 
+      allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" 
+      loading="lazy" 
+      title="Spotify Playlist">
+    </iframe>
+  </section>
+
+  <!-- New Letter Placeholder -->
+  <section class="section" id="letter">
+    <h2> U deserve all of this, baby. I love you </h2>
+    <p>Hello baby, I made this for you because I figured I want you to experience simple things like this. I don't have any doubts for you, baby. It doesnt matter what the issue may be. If you think you cannot communicate well, I will walk with you through that. Even if you cannot express yourself, your emotions freely--I am here, as long as I'm here you're always seen. 
+		
+		I know you, I've memorized you ever since. If you're still afraid, that's okay. I'm still willing to risk it, regardless. I don't know if you're going to like this, but whether you like it or not, it's okay. I just want you to feel appreciated and I want you to feel that you're worth it. You're valued through your lowest low, valued through tiredness, loneliness. You're worth all the time that I gave. :'))' 
+	
+	                         - Truly yours, </p>
+  </section>
+
+  <script>
+    const slides = document.querySelector('.slides');
+    const totalSlides = slides.children.length;
+    let index = 0;
+
+    function showNextSlide() {
+      index = (index + 1) % totalSlides;
+      slides.style.transform = `translateX(${-300 * index}px)`;
+    }
+
+    setInterval(showNextSlide, 3000); // Change slide every 3 seconds
+  </script>
+
+</body>
+</html>
